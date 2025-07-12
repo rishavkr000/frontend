@@ -1,73 +1,59 @@
-# Welcome to your Lovable project
+Team : 
+Name : 
 
-## Project info
+Problem Statement - 2
 
-**URL**: https://lovable.dev/projects/8cdd7ca5-c638-4167-9738-1ec2fa4a59ac
+StackIt – A Minimal Q&A Forum Platform
 
-## How can I edit this code?
+Overview
+StackIt is a minimal question-and-answer platform that supports collaborative learning and structured knowledge sharing. It’s designed to be simple, user-friendly, and focused on the core experience of asking and answering questions within a
+community.
 
-There are several ways of editing your application.
 
-**Use Lovable**
+User        =>          Roles
+Role        =>          Permissions
+Guest       =>          View all questions and answers
+User        =>          Register, log in, post questions/answers, vote
+Admin       =>          Moderate content
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8cdd7ca5-c638-4167-9738-1ec2fa4a59ac) and start prompting.
 
-Changes made via Lovable will be committed automatically to this repo.
+Core Features (Must-Have)
 
-**Use your preferred IDE**
+1. Ask Question
+Users can submit a new question using:
+    Title – Short and descriptive
+    Description – Written using a rich text editor
+    Tags – Multi-select input (e.g., React , JWT)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. Rich Text Editor Features
+The description editor should support:
+    Bold, Italic, Strikethrough
+    Numbered lists, Bullet points
+    Emoji insertion
+    Hyperlink insertion (URL)
+    Image upload
+    Text alignment – Left, Center, Right
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+3. Answering Questions
+    Users can post answers to any question
+    Answers can be form atted using the same rich text editor
+    Only logged-in users can post answers
 
-Follow these steps:
+4. Voting & Accepting Answers
+    Users can upvote or downvote answers
+    Question owners can mark one answer as accepted
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+5. Tagging
+    Questions must include relevant tags
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+6. Notification System
+    A notification icon (bell) appears in the top navigation bar
+    Users are notified when:
+        ○ Someone answers their question
+        ○ Someone comments on their answer
+        ○ Someone mentions them using @username
+    The icon shows the number of unread notifications
+    Clicking the icon opens a dropdown with recent notifications
 
-# Step 3: Install the necessary dependencies.
-npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/8cdd7ca5-c638-4167-9738-1ec2fa4a59ac) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Mock-up:- https://link.excalidraw.com/l/65VNwvy7c4X/9mhEahV0MQg
