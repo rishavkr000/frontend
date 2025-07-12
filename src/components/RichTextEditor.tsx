@@ -1,18 +1,18 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { 
-  Bold, 
-  Italic, 
-  Strikethrough, 
-  List, 
-  ListOrdered, 
-  Smile, 
-  Link, 
-  Image, 
-  AlignLeft, 
-  AlignCenter, 
-  AlignRight 
+import {
+  Bold,
+  Italic,
+  Strikethrough,
+  List,
+  ListOrdered,
+  Smile,
+  Link,
+  Image,
+  AlignLeft,
+  AlignCenter,
+  AlignRight
 } from 'lucide-react';
 
 interface RichTextEditorProps {
@@ -87,9 +87,9 @@ const RichTextEditor = ({ value, onChange, placeholder = "Write your content her
             <Icon className="h-4 w-4" />
           </Button>
         ))}
-        
+
         <div className="w-px bg-gray-300 mx-1 self-stretch" />
-        
+
         <Button
           variant="ghost"
           size="sm"
@@ -102,7 +102,7 @@ const RichTextEditor = ({ value, onChange, placeholder = "Write your content her
         >
           <Link className="h-4 w-4" />
         </Button>
-        
+
         <Button
           variant="ghost"
           size="sm"
@@ -135,8 +135,8 @@ const RichTextEditor = ({ value, onChange, placeholder = "Write your content her
       </div>
 
       {/* Emoji Menu */}
-      <div 
-        id="emoji-menu" 
+      <div
+        id="emoji-menu"
         className="absolute z-10 bg-white border border-gray-300 rounded-lg p-2 shadow-lg hidden"
         style={{ display: 'none' }}
       >
@@ -159,14 +159,20 @@ const RichTextEditor = ({ value, onChange, placeholder = "Write your content her
       {/* Editor */}
       <div
         contentEditable
+        dir="ltr"
         className="min-h-[200px] p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
-        style={{ whiteSpace: 'pre-wrap' }}
-        dangerouslySetInnerHTML={{ __html: value }}
-        onInput={(e) => onChange((e.target as HTMLDivElement).innerHTML)}
-        onBlur={(e) => onChange((e.target as HTMLDivElement).innerHTML)}
+        onInput={(e) => onChange((e.currentTarget as HTMLDivElement).innerHTML)}
+        onBlur={(e) => onChange((e.currentTarget as HTMLDivElement).innerHTML)}
         data-placeholder={placeholder}
-      />
-      
+        suppressContentEditableWarning={true}
+      >
+        {value === '' && (
+          <span className="text-gray-400 pointer-events-none select-none">
+            {placeholder}
+          </span>
+        )}
+      </div>
+
       <style jsx>{`
         [contenteditable]:empty:before {
           content: attr(data-placeholder);

@@ -1,9 +1,9 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, Tag, Filter } from 'lucide-react';
+import API from '@/lib/axios';
 
 interface SidebarProps {
   type: 'left' | 'right';
@@ -11,26 +11,63 @@ interface SidebarProps {
   onTagSelect: (tag: string) => void;
 }
 
-const leftSidebarTags = [
-  { name: 'JavaScript', count: 1234 },
-  { name: 'React', count: 987 },
-  { name: 'TypeScript', count: 765 },
-  { name: 'Node.js', count: 654 },
-  { name: 'Python', count: 543 },
-  { name: 'HTML', count: 432 },
-  { name: 'CSS', count: 321 },
-  { name: 'MongoDB', count: 210 },
-];
+interface TagCount {
+  name: string;
+  count: number;
+}
 
-const trendingQuestions = [
-  { title: 'How to optimize React performance?', votes: 45 },
-  { title: 'Best practices for Node.js security', votes: 32 },
-  { title: 'TypeScript vs JavaScript in 2024', votes: 28 },
-  { title: 'MongoDB aggregation pipeline tips', votes: 24 },
-  { title: 'CSS Grid vs Flexbox comparison', votes: 19 },
-];
+interface Question {
+  _id: string;
+  title: string;
+  votes: number;
+}
 
 const Sidebar = ({ type, selectedTags, onTagSelect }: SidebarProps) => {
+  const [topTags, setTopTags] = useState<TagCount[]>([]);
+  const [trendingQuestions, setTrendingQuestions] = useState<Question[]>([]);
+
+  useEffect(() => {
+    fetchSidebarData();
+  }, []);
+
+  const fetchSidebarData = async () => {
+    try {
+      const res = await API.get('/questions');
+      const allQuestions = res.data;
+
+      // Extract all tags with count
+      const tagCountMap: Record<string, number> = {};
+      const questionList: Question[] = [];
+
+      allQuestions.forEach((q: any) => {
+        questionList.push({ _id: q._id, title: q.title, votes: q.votes });
+        q.tags.forEach((tag: string) => {
+          tagCountMap[tag] = (tagCountMap[tag] || 0) + 1;
+        });
+      });
+
+      const suggestedTags = [
+        'JavaScript', 'React', 'TypeScript', 'Node.js', 'Python',
+        'HTML', 'CSS', 'MongoDB', 'Express', 'API', 'Database',
+        'Frontend', 'Backend', 'Performance', 'Security'
+      ];
+
+      const tagArray: TagCount[] = suggestedTags.map(tag => ({
+        name: tag,
+        count: tagCountMap[tag] || 0
+      }));
+
+      const trending = questionList
+        .sort((a, b) => b.votes - a.votes)
+        .slice(0, 5);
+
+      setTopTags(tagArray);
+      setTrendingQuestions(trending);
+    } catch (error) {
+      console.error("Sidebar API error:", error);
+    }
+  };
+
   if (type === 'left') {
     return (
       <div className="w-64 space-y-6">
@@ -42,15 +79,14 @@ const Sidebar = ({ type, selectedTags, onTagSelect }: SidebarProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {leftSidebarTags.map((tag) => (
+            {topTags.map((tag) => (
               <Button
                 key={tag.name}
                 variant={selectedTags.includes(tag.name) ? "default" : "ghost"}
-                className={`w-full justify-between hover:bg-green-50 ${
-                  selectedTags.includes(tag.name) 
-                    ? 'bg-gradient-to-r from-green-500 to-blue-500' 
-                    : ''
-                }`}
+                className={`w-full justify-between hover:bg-green-50 ${selectedTags.includes(tag.name)
+                  ? 'bg-gradient-to-r from-green-500 to-blue-500'
+                  : ''
+                  }`}
                 onClick={() => onTagSelect(tag.name)}
               >
                 <div className="flex items-center">
@@ -70,7 +106,8 @@ const Sidebar = ({ type, selectedTags, onTagSelect }: SidebarProps) => {
 
   return (
     <div className="w-64 space-y-6">
-      <Card className="border-l-4 border-l-purple-500">
+      {/* Trending Questions */}
+      {/* <Card className="border-l-4 border-l-purple-500">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center">
             <TrendingUp className="h-5 w-5 mr-2 text-purple-600" />
@@ -78,21 +115,22 @@ const Sidebar = ({ type, selectedTags, onTagSelect }: SidebarProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {trendingQuestions.map((question, index) => (
-            <div key={index} className="group cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
+          {trendingQuestions.map((q) => (
+            <div key={q._id} className="group cursor-pointer p-2 rounded-lg hover:bg-purple-50 transition-colors">
               <p className="text-sm font-medium text-gray-900 group-hover:text-purple-600 line-clamp-2 mb-1">
-                {question.title}
+                {q.title}
               </p>
               <div className="flex items-center justify-between">
                 <Badge variant="outline" className="text-xs">
-                  {question.votes} votes
+                  {q.votes} votes
                 </Badge>
               </div>
             </div>
           ))}
         </CardContent>
-      </Card>
+      </Card> */}
 
+      {/* Popular Tags */}
       <Card className="border-l-4 border-l-orange-500">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center">
@@ -102,10 +140,10 @@ const Sidebar = ({ type, selectedTags, onTagSelect }: SidebarProps) => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
-            {leftSidebarTags.slice(0, 6).map((tag) => (
-              <Badge 
-                key={tag.name} 
-                variant="secondary" 
+            {topTags.slice(0, 6).map((tag) => (
+              <Badge
+                key={tag.name}
+                variant="secondary"
                 className="cursor-pointer hover:bg-orange-100 hover:text-orange-700 transition-colors"
                 onClick={() => onTagSelect(tag.name)}
               >

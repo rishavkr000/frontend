@@ -1,9 +1,19 @@
-Team : 
-Name : 
+Team Name : Team 3830
 
-Problem Statement - 2
+Team Details:
+- Team Leader
+    - Name: Saksham Mathur 
+    - Email address: skdasaksham@gmail.com
+    - Phone: 9784957969
 
-StackIt – A Minimal Q&A Forum Platform
+- Team Member 1
+    - Name: Sahil Kumar
+    - Email address: sahilkr9608@gmail.com
+    - Phone: 9608428137
+
+Project Recording Video Link : https://drive.google.com/file/d/1u7zOlAZlmVW_xeOIHYnC9P53W5xQqFnx/view?usp=sharing
+
+Problem Statement - 2 : StackIt – A Minimal Q&A Forum Platform
 
 Overview
 StackIt is a minimal question-and-answer platform that supports collaborative learning and structured knowledge sharing. It’s designed to be simple, user-friendly, and focused on the core experience of asking and answering questions within a

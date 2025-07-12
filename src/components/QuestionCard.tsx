@@ -9,10 +9,13 @@ interface Question {
   id: string;
   title: string;
   body: string;
-  author: string;
+  author: {
+    _id: string;
+    name: string;
+  };
   tags: string[];
   votes: number;
-  answers: number;
+  answers?: number;
   timestamp: string;
   hasAcceptedAnswer?: boolean;
 }
@@ -114,7 +117,7 @@ const QuestionCard = ({ question, onClick, onVote }: QuestionCardProps) => {
               <span>{timeAgo(question.timestamp)}</span>
             </div>
             <span>by</span>
-            <span className="font-medium text-blue-600">{question.author}</span>
+            <span className="font-medium text-blue-600">{question.author.name}</span>
           </div>
         </div>
       </CardContent>

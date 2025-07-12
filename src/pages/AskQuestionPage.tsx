@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, FormEvent, KeyboardEvent } from 'react';
 import { ArrowLeft, Tag, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,10 +36,10 @@ const AskQuestionPage = ({ onBack, onSubmit }: AskQuestionPageProps) => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (title && body && tags.length > 0) {
-      onSubmit({ title, body, tags });
+    if (title.trim() && body.trim() && tags.length > 0) {
+      onSubmit({ title: title.trim(), body: body.trim(), tags });
     }
   };
 

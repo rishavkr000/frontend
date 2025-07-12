@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Bell, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,17 +14,34 @@ import {
 interface NavbarProps {
   onSearch: (query: string) => void;
   onLoginClick: () => void;
-  user: { name: string; avatar?: string } | null;
+  user: { name: string; email: string; avatar?: string } | null;
   notificationCount: number;
+  onLogout?: () => void; // Optional logout callback
 }
 
-const Navbar = ({ onSearch, onLoginClick, user, notificationCount }: NavbarProps) => {
+const Navbar = ({
+  onSearch,
+  onLoginClick,
+  user,
+  notificationCount,
+  onLogout,
+}: NavbarProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(searchQuery);
+    if (!searchQuery.trim()) return;
+    onSearch(searchQuery.trim());
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    if (onLogout) {
+      onLogout(); // optional callback to reset state
+    } else {
+      window.location.reload(); // fallback: refresh the page
+    }
   };
 
   return (
@@ -76,18 +92,16 @@ const Navbar = ({ onSearch, onLoginClick, user, notificationCount }: NavbarProps
                 {/* User Menu */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                      <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-medium">
-                        {user.name.charAt(0).toUpperCase()}
-                      </div>
-                    </Button>
+                    <div className="h-9 w-9 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-medium cursor-pointer shadow-sm">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <div className="flex items-center justify-start gap-2 p-2">
                       <div className="flex flex-col space-y-1 leading-none">
                         <p className="font-medium">{user.name}</p>
                         <p className="w-[200px] truncate text-sm text-muted-foreground">
-                          user@example.com
+                          {user.email}
                         </p>
                       </div>
                     </div>
@@ -95,12 +109,15 @@ const Navbar = ({ onSearch, onLoginClick, user, notificationCount }: NavbarProps
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Log out</DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </>
             ) : (
-              <Button onClick={onLoginClick} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+              <Button
+                onClick={onLoginClick}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              >
                 Sign In
               </Button>
             )}
@@ -146,9 +163,15 @@ const Navbar = ({ onSearch, onLoginClick, user, notificationCount }: NavbarProps
                     <User className="h-4 w-4 mr-2" />
                     Profile
                   </Button>
+                  <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                    Log out
+                  </Button>
                 </>
               ) : (
-                <Button onClick={onLoginClick} className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+                <Button
+                  onClick={onLoginClick}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600"
+                >
                   Sign In
                 </Button>
               )}
